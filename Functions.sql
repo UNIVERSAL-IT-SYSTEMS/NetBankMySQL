@@ -1,0 +1,7 @@
+USE `DTUGRP16`;
+
+DROP FUNCTION IF EXISTS daysSinceTransaction;
+
+CREATE FUNCTION daysSinceTransaction(transactionDate DATE)
+RETURNS INTEGER
+RETURN TIMESTAMPDIFF(DAY, transactionDate, CURDATE());
