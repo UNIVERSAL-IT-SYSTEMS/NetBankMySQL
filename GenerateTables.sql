@@ -9,6 +9,7 @@ USE `DTUGRP16` ;
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Client`
 -- -----------------------------------------------------
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `DTUGRP16`.`Client` ;
 
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Client` (
@@ -214,3 +215,5 @@ CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Transaction` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+SET FOREIGN_KEY_CHECKS=1;
