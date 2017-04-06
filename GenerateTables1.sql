@@ -21,160 +21,142 @@ USE `DTUGRP16` ;
 -- Table `DTUGRP16`.`Place`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Place` (
-  `Postal` INT NOT NULL,
-  `Country` VARCHAR(45) NOT NULL,
-  `City` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Postal`, `Country`))
-ENGINE = InnoDB;
+    `Postal` INT NOT NULL,
+    `Country` VARCHAR(45) NOT NULL,
+    `City` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`Postal` , `Country`)
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Branch`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Branch` (
-  `RegNo` INT NOT NULL,
-  `BankName` VARCHAR(20) NOT NULL,
-  `Postal` INT NOT NULL,
-  `Country` VARCHAR(45) NOT NULL,
-  `Street` VARCHAR(45) NOT NULL,
-  `Telefon` INT NULL,
-  PRIMARY KEY (`RegNo`),
-  CONSTRAINT `fk_Branch_Place`
-    FOREIGN KEY (`Postal` , `Country`)
-    REFERENCES `DTUGRP16`.`Place` (`Postal` , `Country`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    `RegNo` INT NOT NULL,
+    `BankName` VARCHAR(20) NOT NULL,
+    `Postal` INT NOT NULL,
+    `Country` VARCHAR(45) NOT NULL,
+    `Street` VARCHAR(45) NOT NULL,
+    `Telefon` INT NULL,
+    PRIMARY KEY (`RegNo`),
+    CONSTRAINT `fk_Branch_Place` FOREIGN KEY (`Postal` , `Country`)
+        REFERENCES `DTUGRP16`.`Place` (`Postal` , `Country`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Banker`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Banker` (
-  `BankerID` CHAR(7) NOT NULL,
-  `BankerName` VARCHAR(45) NOT NULL,
-  `Mobile` INT NULL,
-  `RegNo` INT NOT NULL,
-  PRIMARY KEY (`BankerID`),
-  INDEX `fk_Banker_Branch_idx` (`RegNo` ASC),
-  CONSTRAINT `fk_Banker_Branch`
-    FOREIGN KEY (`RegNo`)
-    REFERENCES `DTUGRP16`.`Branch` (`RegNo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    `BankerID` CHAR(7) NOT NULL,
+    `BankerName` VARCHAR(45) NOT NULL,
+    `MobileNo` INT NULL,
+    `RegNo` INT NOT NULL,
+    PRIMARY KEY (`BankerID`),
+    INDEX `fk_Banker_Branch_idx` (`RegNo` ASC),
+    CONSTRAINT `fk_Banker_Branch` FOREIGN KEY (`RegNo`)
+        REFERENCES `DTUGRP16`.`Branch` (`RegNo`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Client`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Client` (
-  `ClientID` CHAR(9) NOT NULL,
-  `CPR` CHAR(10) NOT NULL,
-  `FirstName` VARCHAR(45) NOT NULL,
-  `LastName` VARCHAR(45) NOT NULL,
-  `Email` VARCHAR(45) NULL,
-  `Mobile` VARCHAR(45) NULL,
-  `Street` VARCHAR(45) NULL,
-  `BankerID` CHAR(7) NOT NULL,
-  `Postal` INT NOT NULL,
-  `Country` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`ClientID`),
-  INDEX `fk_Client_Place_idx` (`Postal` ASC, `Country` ASC),
-  INDEX `fk_Client_Banker_idx` (`BankerID` ASC),
-  CONSTRAINT `fk_Client_Place`
-    FOREIGN KEY (`Postal` , `Country`)
-    REFERENCES `DTUGRP16`.`Place` (`Postal` , `Country`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Client_Banker`
-    FOREIGN KEY (`BankerID`)
-    REFERENCES `DTUGRP16`.`Banker` (`BankerID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    `ClientID` CHAR(9) NOT NULL,
+    `CPR` CHAR(10) NOT NULL,
+    `FirstName` VARCHAR(45) NOT NULL,
+    `LastName` VARCHAR(45) NOT NULL,
+    `Email` VARCHAR(45) NULL,
+    `Mobile` VARCHAR(45) NULL,
+    `Street` VARCHAR(45) NULL,
+    `BankerID` CHAR(7) NOT NULL,
+    `Postal` INT NOT NULL,
+    `Country` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`ClientID`),
+    INDEX `fk_Client_Place_idx` (`Postal` ASC , `Country` ASC),
+    INDEX `fk_Client_Banker_idx` (`BankerID` ASC),
+    CONSTRAINT `fk_Client_Place` FOREIGN KEY (`Postal` , `Country`)
+        REFERENCES `DTUGRP16`.`Place` (`Postal` , `Country`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_Client_Banker` FOREIGN KEY (`BankerID`)
+        REFERENCES `DTUGRP16`.`Banker` (`BankerID`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Currency`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Currency` (
-  `Currency` VARCHAR(45) NOT NULL,
-  `ExchangeRate` DECIMAL(5,2) NOT NULL,
-  PRIMARY KEY (`Currency`))
-ENGINE = InnoDB;
+    `Currency` VARCHAR(45) NOT NULL,
+    `ExchangeRate` DECIMAL(5 , 2 ) NOT NULL,
+    PRIMARY KEY (`Currency`)
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Account Type`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Account Type` (
-  `AccountType` VARCHAR(45) NOT NULL,
-  `RegNo` INT NOT NULL,
-  `InterestRate` DECIMAL(5,2) NOT NULL,
-  PRIMARY KEY (`AccountType`, `RegNo`),
-  INDEX `fk_AccountType_Branch_idx` (`RegNo` ASC),
-  CONSTRAINT `fk_AccountType_Branch`
-    FOREIGN KEY (`RegNo`)
-    REFERENCES `DTUGRP16`.`Branch` (`RegNo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    `AccountType` VARCHAR(45) NOT NULL,
+    `RegNo` INT NOT NULL,
+    `InterestRate` DECIMAL(5 , 2 ) NOT NULL,
+    PRIMARY KEY (`AccountType` , `RegNo`),
+    INDEX `fk_AccountType_Branch_idx` (`RegNo` ASC),
+    CONSTRAINT `fk_AccountType_Branch` FOREIGN KEY (`RegNo`)
+        REFERENCES `DTUGRP16`.`Branch` (`RegNo`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Account`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Account` (
-  `AccountNumber` CHAR(10) NOT NULL,
-  `RegNo` INT NOT NULL,
-  `AccountType` VARCHAR(45) NOT NULL,
-  `ClientID` CHAR(9) NOT NULL,
-  `Balance` DECIMAL(10,2) NOT NULL,
-  PRIMARY KEY (`AccountNumber`, `RegNo`),
-  INDEX `fk_Account_Client_idx` (`ClientID` ASC),
-  INDEX `fk_Account_AccountType_idx` (`AccountType` ASC, `RegNo` ASC),
-  CONSTRAINT `fk_Account_Client`
-    FOREIGN KEY (`ClientID`)
-    REFERENCES `DTUGRP16`.`Client` (`ClientID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Account_AccountType`
-    FOREIGN KEY (`AccountType` , `RegNo`)
-    REFERENCES `DTUGRP16`.`Account Type` (`AccountType` , `RegNo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    `AccountNumber` CHAR(10) NOT NULL,
+    `RegNo` INT NOT NULL,
+    `AccountType` VARCHAR(45) NOT NULL,
+    `ClientID` CHAR(9) NOT NULL,
+    `Balance` DECIMAL(10 , 2 ) NOT NULL,
+    PRIMARY KEY (`AccountNumber` , `RegNo`),
+    INDEX `fk_Account_Client_idx` (`ClientID` ASC),
+    INDEX `fk_Account_AccountType_idx` (`AccountType` ASC , `RegNo` ASC),
+    CONSTRAINT `fk_Account_Client` FOREIGN KEY (`ClientID`)
+        REFERENCES `DTUGRP16`.`Client` (`ClientID`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_Account_AccountType` FOREIGN KEY (`AccountType` , `RegNo`)
+        REFERENCES `DTUGRP16`.`Account Type` (`AccountType` , `RegNo`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
 
 -- -----------------------------------------------------
 -- Table `DTUGRP16`.`Transaction`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `DTUGRP16`.`Transaction` (
-  `TransactionID` INT NOT NULL AUTO_INCREMENT,
-  `AccountNumber` CHAR(10) NOT NULL,
-  `RegNo` INT NOT NULL,
-  `DateOfTransaction` DATE NOT NULL,
-  `DaysSince` INT NULL,
-  `RecieveAccount` INT NOT NULL,
-  `RecieveRegNo` INT NULL,
-  `Value` DECIMAL(9,2) NOT NULL,
-  `Currency` VARCHAR(45) NOT NULL,
-  `Note` MEDIUMTEXT NULL,
-  PRIMARY KEY (`TransactionID`),
-  INDEX `fk_Transaction_Currency_idx` (`Currency` ASC),
-  INDEX `fk_Transaction_Account_idx` (`AccountNumber` ASC, `RegNo` ASC),
-  CONSTRAINT `fk_Transaction_Currency`
-    FOREIGN KEY (`Currency`)
-    REFERENCES `DTUGRP16`.`Currency` (`Currency`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Transaction_Account`
-    FOREIGN KEY (`AccountNumber` , `RegNo`)
-    REFERENCES `DTUGRP16`.`Account` (`AccountNumber` , `RegNo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    `TransactionID` INT NOT NULL AUTO_INCREMENT,
+    `AccountNumber` CHAR(10) NOT NULL,
+    `RegNo` INT NOT NULL,
+    `DateOfTransaction` DATE NOT NULL,
+    `DaysSince` INT NULL,
+    `RecieveAccount` INT NOT NULL,
+    `RecieveRegNo` INT NULL,
+    `Value` DECIMAL(9 , 2 ) NOT NULL,
+    `Currency` VARCHAR(45) NOT NULL,
+    `Note` MEDIUMTEXT NULL,
+    PRIMARY KEY (`TransactionID`),
+    INDEX `fk_Transaction_Currency_idx` (`Currency` ASC),
+    INDEX `fk_Transaction_Account_idx` (`AccountNumber` ASC , `RegNo` ASC),
+    CONSTRAINT `fk_Transaction_Currency` FOREIGN KEY (`Currency`)
+        REFERENCES `DTUGRP16`.`Currency` (`Currency`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_Transaction_Account` FOREIGN KEY (`AccountNumber` , `RegNo`)
+        REFERENCES `DTUGRP16`.`Account` (`AccountNumber` , `RegNo`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+)  ENGINE=INNODB;
 
 USE `DTUGRP16`;
 
@@ -186,9 +168,202 @@ BEGIN
 END
 $$
 
-
 DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+DROP TRIGGER IF EXISTS client_before_insert;
+
+DELIMITER //
+CREATE TRIGGER client_before_insert
+	BEFORE INSERT ON Client FOR EACH ROW
+    BEGIN
+		DECLARE ID INTEGER;
+		SET ID = (SELECT CAST(SUBSTRING(ClientID, 1, 8) AS UNSIGNED) FROM Client ORDER BY ClientID DESC LIMIT 1);
+        IF ID > 0 THEN
+			SET ID = ID + 1;
+			SET New.ClientID = RPAD(LPAD(ID, 8, '0'), 9, 'C');
+		ELSE
+			SET New.ClientID = '00000001C';
+		END IF;
+	END; //
+DELIMITER ;      
+
+DROP TRIGGER IF EXISTS banker_before_insert;
+
+DELIMITER //
+CREATE TRIGGER banker_before_insert
+	BEFORE INSERT ON Banker FOR EACH ROW
+    BEGIN
+		DECLARE ID INTEGER;
+		SET ID = (SELECT CAST(SUBSTRING(BankerID, 1, 6) AS UNSIGNED) FROM Banker ORDER BY BankerID DESC LIMIT 1);
+        IF ID > 0 THEN
+			SET ID = ID + 1;
+			SET New.BankerID = RPAD(LPAD(ID, 6, '0'), 7, 'B');
+		ELSE
+			SET New.BankerID = '000001B';
+		END IF;
+	END; //
+DELIMITER ;    
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Place`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Place` (`Postal`, `Country`, `City`) VALUES (2077, 'Australia', 'Hornsby');
+INSERT INTO `DTUGRP16`.`Place` (`Postal`, `Country`, `City`) VALUES (8600, 'Denmark', 'Silkeborg');
+INSERT INTO `DTUGRP16`.`Place` (`Postal`, `Country`, `City`) VALUES (2750, 'Denmark', 'Ballerup');
+INSERT INTO `DTUGRP16`.`Place` (`Postal`, `Country`, `City`) VALUES (2800, 'Denmark', 'Kgs. Lyngby');
+INSERT INTO `DTUGRP16`.`Place` (`Postal`, `Country`, `City`) VALUES (4760, 'Denmark', 'Vordingborg');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Branch`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Branch` (`RegNo`, `BankName`, `Postal`, `Country`, `Street`, `Telefon`) VALUES (7170, 'Jyske Bank', 8600, 'Denmark', 'Vestergade 8', NULL);
+INSERT INTO `DTUGRP16`.`Branch` (`RegNo`, `BankName`, `Postal`, `Country`, `Street`, `Telefon`) VALUES (0400, 'Lån og Spar', 2800, 'Denmark', 'Hovedkontoret', NULL);
+INSERT INTO `DTUGRP16`.`Branch` (`RegNo`, `BankName`, `Postal`, `Country`, `Street`, `Telefon`) VALUES (6220, 'Lollans Bank', 4760, 'Denmark', 'Ulvestien 6', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Banker`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Banker` (`BankerID`, `BankerName`, `MobileNo`, `RegNo`) VALUES (NULL, 'Alexander', NULL, 6220);
+INSERT INTO `DTUGRP16`.`Banker` (`BankerID`, `BankerName`, `MobileNo`, `RegNo`) VALUES (NULL, 'Emilie', 30143783, 7170);
+INSERT INTO `DTUGRP16`.`Banker` (`BankerID`, `BankerName`, `MobileNo`, `RegNo`) VALUES (NULL, 'Simon', NULL, 0400);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Client`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Client` (`ClientID`, `CPR`, `FirstName`, `LastName`, `Email`, `Mobile`, `Street`, `BankerID`, `Postal`, `Country`) VALUES ('00000000C', '1304881115', 'Allan', 'Allansen', 'allall@DTU.dk', '25555266', 'Australia Way', '000002B', 2077, 'Australia');
+INSERT INTO `DTUGRP16`.`Client` (`ClientID`, `CPR`, `FirstName`, `LastName`, `Email`, `Mobile`, `Street`, `BankerID`, `Postal`, `Country`) VALUES (NULL, '1212459999', 'Børge', 'Børgesen', 'børbør@DTU.dk', '22666677', 'Sydney Avenue', '000002B', 2077, 'Australia');
+INSERT INTO `DTUGRP16`.`Client` (`ClientID`, `CPR`, `FirstName`, `LastName`, `Email`, `Mobile`, `Street`, `BankerID`, `Postal`, `Country`) VALUES (NULL, '1111944225', 'Carsten', 'Carstensen', 'carcar@DTU.dk', '22227777', 'Silkeborg Alle', '000002B', 8600, 'Denmark');
+INSERT INTO `DTUGRP16`.`Client` (`ClientID`, `CPR`, `FirstName`, `LastName`, `Email`, `Mobile`, `Street`, `BankerID`, `Postal`, `Country`) VALUES (NULL, '0202900291', 'Danny', 'Dansen', 'dandan@DTU.dk', '32666699', 'Randersvej', '000001B', 4760, 'Denmark');
+INSERT INTO `DTUGRP16`.`Client` (`ClientID`, `CPR`, `FirstName`, `LastName`, `Email`, `Mobile`, `Street`, `BankerID`, `Postal`, `Country`) VALUES (NULL, '0511898242', 'Emma', 'Emmalius', 'emmemm@DTU.dk', '33662336', 'Ballevej', '000003B', 2750, 'Denmark');
+INSERT INTO `DTUGRP16`.`Client` (`ClientID`, `CPR`, `FirstName`, `LastName`, `Email`, `Mobile`, `Street`, `BankerID`, `Postal`, `Country`) VALUES (NULL, '1601930834', 'Freya', 'Freybar', 'frefre@DTU.dk', '33377733', 'Hovedgaden', '000001B', 2800, 'Denmark');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Currency`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Currency` (`Currency`, `ExchangeRate`) VALUES ('Danish Krone', 7.44);
+INSERT INTO `DTUGRP16`.`Currency` (`Currency`, `ExchangeRate`) VALUES ('Amerikan Dollor', 1.07);
+INSERT INTO `DTUGRP16`.`Currency` (`Currency`, `ExchangeRate`) VALUES ('Australian Dollor', 1.41);
+INSERT INTO `DTUGRP16`.`Currency` (`Currency`, `ExchangeRate`) VALUES ('Euro', 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Account Type`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Savings', 7170, 1.01);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Student', 7170, 1.025);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Deposit', 7170, 1);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Pension', 6220, 1.055);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Children\'s Savings', 0400, 1.07);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Savings', 6220, 1.035);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Student', 6220, 1.03);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Savings', 0400, 1.03);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Deposit', 6220, 1);
+INSERT INTO `DTUGRP16`.`Account Type` (`AccountType`, `RegNo`, `InterestRate`) VALUES ('Deposit', 0400, 1.001);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Account`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0004567899', 7170, 'Student', '00000001C', 1572.56);
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0004567898', 7170, 'Savings', '00000001C', 30401);
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0003232312', 0400, 'Children\'s Savings', '00000002C', 55765.2);
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0000567199', 0400, 'Savings', '00000004C', 8500);
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0000561399', 6220, 'Deposit', '00000005C', 520.5);
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0000123433', 6220, 'Student', '00000004C', 862.82);
+INSERT INTO `DTUGRP16`.`Account` (`AccountNumber`, `RegNo`, `AccountType`, `ClientID`, `Balance`) VALUES ('0000124534', 6220, 'Pension', '00000003C', 95000);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `DTUGRP16`.`Transaction`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `DTUGRP16`;
+INSERT INTO `DTUGRP16`.`Transaction` (`TransactionID`, `AccountNumber`, `RegNo`, `DateOfTransaction`, `DaysSince`, `RecieveAccount`, `RecieveRegNo`, `Value`, `Currency`, `Note`) VALUES (DEFAULT, '0004567899', 7170, '2017-01-01', NULL, 0000567199, 0400, 995, 'Danish Krone', 'Det blev en dyr nytårsaften!');
+INSERT INTO `DTUGRP16`.`Transaction` (`TransactionID`, `AccountNumber`, `RegNo`, `DateOfTransaction`, `DaysSince`, `RecieveAccount`, `RecieveRegNo`, `Value`, `Currency`, `Note`) VALUES (DEFAULT, '0000567199', 0400, '2017-02-03', NULL, 0000123433, 0400, 5000, 'Danish Krone', 'Så bliver der råd til den nye seng alligevel');
+
+COMMIT;
+
+
+DROP FUNCTION IF EXISTS daysSinceTransaction;
+
+CREATE FUNCTION daysSinceTransaction(transactionDate DATE)
+RETURNS INTEGER
+RETURN TIMESTAMPDIFF(DAY, transactionDate, CURDATE());
+
+SET GLOBAL event_scheduler = 1;
+
+CREATE EVENT updateTransactionDays
+ON SCHEDULE EVERY 1 DAY
+DO UPDATE Transaction SET DaysSince = daysSinceTransaction((SELECT DateOfTransaction FROM Transaction));
+
+DROP PROCEDURE IF EXISTS Transfer;
+
+DELIMITER //
+CREATE PROCEDURE Transfer(
+	IN accountOut INT, accountIn INT, amount DECIMAL(9,2), OUT status VARCHAR(45))
+    BEGIN
+		DECLARE oldBalanceOut, newBalanceOut, oldBalanceIn, newBalanceIn DECIMAL(10,2) DEFAULT 0;
+        START TRANSACTION;
+			SET oldBalanceOut = (SELECT Balance FROM Account WHERE AccountNo = accountOut);
+            SET newBalanceOut = oldBalanceOut - amount;
+            IF newBalanceOut < 0 THEN
+				SET newBalanceOut = oldBalanceOut;
+			END IF;
+UPDATE Account 
+SET 
+    Balance = newBalanceOut
+WHERE
+    AccountNo = accountOut;
+            
+			SET oldBalanceIn = (SELECT Balance FROM Account WHERE AccountNo = accountIn);
+            SET newBalanceIn = oldBalanceIn + amount;
+UPDATE Account 
+SET 
+    Balance = newBalanceIn
+WHERE
+    AccountNo = accountIn;
+            
+            IF (oldBalanceOut + oldBalanceIn) = (newBalanceOut + newBalanceIn) THEN
+				SET status = "Transferred Succesfully";
+                COMMIT;
+			ELSE
+				ROLLBACK;
+			END IF;
+	END //
+DELIMITER ;

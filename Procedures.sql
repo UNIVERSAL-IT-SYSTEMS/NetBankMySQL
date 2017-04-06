@@ -13,11 +13,19 @@ CREATE PROCEDURE Transfer(
             IF newBalanceOut < 0 THEN
 				SET newBalanceOut = oldBalanceOut;
 			END IF;
-            UPDATE Account SET Balance = newBalanceOut WHERE AccountNo = accountOut;
+UPDATE Account 
+SET 
+    Balance = newBalanceOut
+WHERE
+    AccountNo = accountOut;
             
 			SET oldBalanceIn = (SELECT Balance FROM Account WHERE AccountNo = accountIn);
             SET newBalanceIn = oldBalanceIn + amount;
-            UPDATE Account SET Balance = newBalanceIn WHERE AccountNo = accountIn;
+UPDATE Account 
+SET 
+    Balance = newBalanceIn
+WHERE
+    AccountNo = accountIn;
             
             IF (oldBalanceOut + oldBalanceIn) = (newBalanceOut + newBalanceIn) THEN
 				SET status = "Transferred Succesfully";
