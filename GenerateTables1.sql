@@ -176,6 +176,10 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 DROP TRIGGER IF EXISTS client_before_insert;
 
+-- -----------------------------------------------------
+-- Triggers for ID
+-- -----------------------------------------------------
+
 DELIMITER //
 CREATE TRIGGER client_before_insert
 	BEFORE INSERT ON Client FOR EACH ROW
@@ -319,18 +323,29 @@ INSERT INTO `DTUGRP16`.`Transaction` (`TransactionID`, `AccountNumber`, `RegNo`,
 
 COMMIT;
 
+-- -----------------------------------------------------
+-- Function - DaysSinceTransaction
+-- -----------------------------------------------------
 
-DROP FUNCTION IF EXISTS daysSinceTransaction;
+DROP FUNCTION IF EXISTS DaysSinceTransaction;
 
-CREATE FUNCTION daysSinceTransaction(transactionDate DATE)
+CREATE FUNCTION DaysSinceTransaction(transactionDate DATE)
 RETURNS INTEGER
 RETURN TIMESTAMPDIFF(DAY, transactionDate, CURDATE());
 
+-- -----------------------------------------------------
+-- Event - UpdateTransactionDays
+-- -----------------------------------------------------
+
 SET GLOBAL event_scheduler = 1;
 
-CREATE EVENT updateTransactionDays
+CREATE EVENT UpdateTransactionDays
 ON SCHEDULE EVERY 1 DAY
-DO UPDATE Transaction SET DaysSince = daysSinceTransaction((SELECT DateOfTransaction FROM Transaction));
+DO UPDATE Transaction SET DaysSince = DaysSinceTransaction((SELECT DateOfTransaction FROM Transaction));
+
+-- -----------------------------------------------------
+-- Transaction - Transfer
+-- -----------------------------------------------------
 
 DROP PROCEDURE IF EXISTS Transfer;
 
